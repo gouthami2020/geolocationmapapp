@@ -1,0 +1,61 @@
+<html>
+   <head>
+      <title>GEO LOCATION</title>
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd8_wV3vRDCw13SO_-ChlfRBv4NBrRdqM" type="text/javascript"></script>
+      <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js">
+      </script>
+<!--      <script type = "text/javascript" src = "https://www.google.com/jsapi">-->
+      </script>
+      <script type = "text/javascript">
+         google.charts.load('current', {packages: ['map']});
+      </script>
+   </head>
+
+   <body>
+   <input type="hidden" value="{{data}}" id="map_data">
+        <nav style="background: #333; color: #fff; height: 100%; width: 0; position: fixed; top: 0; left: 0; opacity: 0.9;padding-top: 60p">
+          <ul class="navlist">
+            <li>
+              <a class="menu-item" href="/">
+                Home
+              </a>
+            </li>
+
+            <li>
+              <a class="menu-item" href="/map">
+                Map
+              </a>
+            </li>
+          </ul>
+        </nav>
+      <div id = "container" style = "width: 1000; height: 600; margin: 0 auto">
+      </div>
+      <script language = "JavaScript">
+         function drawChart() {
+            // Define the chart to be drawn.
+            var resp_data = $.parseJSON($("#map_data").val());
+            var dhaka = new google.maps.LatLng(23.8103, 90.4125);
+            console.log($.parseJSON($("#map_data").val()));
+
+            new google.maps.Size(100,100);
+            var chartData = [['Lat', 'Long', 'Name']];  // <-- column headings
+
+              // load data into array
+              $.each(resp_data, function (key, val) {
+                chartData.push([val.latitude, val.longitude, val.name]);
+              });
+            var data = google.visualization.arrayToDataTable(chartData);
+
+            // Set chart options
+            var options = {showTip: true,width: 100000,height: 500,center: dhaka,streetViewControl: false};
+
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.Map(document.getElementById
+            ('container'));
+            chart.draw(data, options);
+         }
+         google.charts.setOnLoadCallback(drawChart);
+      </script>
+   </body>
+</html>
